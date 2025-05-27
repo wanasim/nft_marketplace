@@ -1,36 +1,79 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# NFT Marketplace
 
-## Getting Started
+A full-stack NFT marketplace built with Next.js, Foundry, and The Graph.
 
-First, run the development server:
+## Project Structure
 
+- `foundry/` - Smart contracts and deployment scripts
+- `src/` - Next.js frontend application
+- `subgraph/` - The Graph subgraph for indexing (coming soon)
+
+## Smart Contracts
+
+The project includes two main contracts:
+- `NFT.sol`: ERC721 token contract for minting NFTs
+- `Marketplace.sol`: Contract for listing and buying NFTs
+
+## Local Development
+
+### Prerequisites
+
+- Node.js (v18+)
+- pnpm
+- Foundry (forge, anvil, cast)
+
+### Setup
+
+1. Install dependencies:
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+pnpm install
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+2. Install Foundry dependencies:
+```bash
+cd foundry
+forge install
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Local Deployment
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+To deploy contracts to a local Anvil instance:
 
-## Learn More
+1. Start Anvil in a separate terminal:
+```bash
+anvil
+```
 
-To learn more about Next.js, take a look at the following resources:
+2. Deploy contracts:
+```bash
+cd foundry
+forge script script/Deploy.s.sol:DeployScript --rpc-url http://localhost:8545 --broadcast --private-key 0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Sepolia Deployment
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+To deploy to Sepolia testnet:
 
-## Deploy on Vercel
+1. Set up environment variables:
+```bash
+# foundry/.env
+PRIVATE_KEY=your_private_key
+SEPOLIA_RPC_URL=https://eth-sepolia.g.alchemy.com/v2/1ErRyLOv8ZMeI_n3otIQH1BJ7pboy16V
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+2. Deploy contracts:
+```bash
+cd foundry
+forge script script/Deploy.s.sol:DeployScript --rpc-url $SEPOLIA_RPC_URL --broadcast --verify
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Frontend Development
+
+Start the development server:
+```bash
+pnpm dev
+```
+
+## License
+
+MIT
