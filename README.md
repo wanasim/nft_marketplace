@@ -74,6 +74,21 @@ Start the development server:
 pnpm dev
 ```
 
-## License
+## License MIT
 
-MIT
+
+## TO-DO: 
+1. Fix base components and styling. 
+2. Add create functionality and allow users to upload their own pics of the NFT (if that's the way it's supposed to work. ) 
+    2.1. Implement IPFS for metadata storage if this is the ideal way.  
+3. Deploy the contracts to Anvil using the commands in the README
+4. Replace the mock data with actual contract calls
+5. Add The Graph subgraph for indexing
+6. Add more advanced features like auctions, offers, etc.
+
+Ambitious:
+7. Add a frontend for the marketplace
+7. Add a backend for the marketplace
+8. Add a database for the marketplace
+9. Add a payment gateway for the marketplace
+10. Add a notification system for the marketplace
