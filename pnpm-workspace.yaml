@@ -1,0 +1,4 @@
+packages:
+  - '.'  # Root package (Next.js app)
+  - 'foundry'  # Foundry contracts 
+  

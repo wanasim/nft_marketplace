@@ -1,0 +1,8 @@
+{
+  "name": "@nft-marketplace/contracts",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "generate-abi": "forge inspect NFT abi > ../src/contracts/NFT.json && forge inspect Marketplace abi > ../src/contracts/Marketplace.json"
+  }
+}

@@ -1,7 +1,7 @@
 import {
   useContractRead,
-  useContractWrite,
-  useWaitForTransaction,
+  useWriteContract,
+  useWaitForTransactionReceipt,
 } from "wagmi";
 import { parseEther } from "viem";
 import NFT_ABI from "@/contracts/NFT.json";
@@ -24,21 +24,20 @@ export function useNFTContract() {
   });
 
   // Write functions
-  const { data: mintData, write: mint } = useContractWrite({
-    address: NFT_CONTRACT_ADDRESS,
-    abi: NFT_ABI,
-    functionName: "mint",
-  });
+  const { data: mintData, writeContract: mint } = useWriteContract();
 
   const { isLoading: isMinting, isSuccess: isMintSuccess } =
-    useWaitForTransaction({
-      hash: mintData?.hash,
+    useWaitForTransactionReceipt({
+      hash: mintData,
     });
 
   // Helper functions
   const mintNFT = async (recipient: `0x${string}`, tokenURI: string) => {
     try {
       await mint({
+        address: NFT_CONTRACT_ADDRESS,
+        abi: NFT_ABI,
+        functionName: "mint",
         args: [recipient, tokenURI],
       });
     } catch (error) {
