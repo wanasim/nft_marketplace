@@ -37,7 +37,8 @@ forge install
 
 ### Local Deployment
 
-To deploy contracts to a local Anvil instance:
+#### Method 1: Using Deploy Script
+To deploy contracts to a local Anvil instance using the deploy script:
 
 1. Start Anvil in a separate terminal:
 ```bash
@@ -47,24 +48,65 @@ anvil
 2. Deploy contracts:
 ```bash
 cd foundry
-forge script script/Deploy.s.sol:DeployScript --rpc-url http://localhost:8545 --broadcast --private-key 0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80
+forge script script/Deploy.s.sol:DeployScript --rpc-url $ANVIL_RPC_URL --broadcast --private-key $ANVIL_PRIVATE_KEY
+```
+
+#### Method 2: Manual Deployment
+To deploy contracts manually using Forge:
+
+1. Start Anvil in a separate terminal:
+```bash
+anvil
+```
+
+2. Deploy NFT contract:
+```bash
+cd foundry
+forge create src/NFT.sol:NFT --rpc-url $ANVIL_RPC_URL --private-key $ANVIL_PRIVATE_KEY --constructor-args "NFT Marketplace" "NFTM"
+```
+
+3. Deploy Marketplace contract (replace NFT_ADDRESS with the address from step 2):
+```bash
+forge create src/Marketplace.sol:Marketplace --rpc-url $ANVIL_RPC_URL --private-key $ANVIL_PRIVATE_KEY --constructor-args NFT_ADDRESS
 ```
 
 ### Sepolia Deployment
 
-To deploy to Sepolia testnet:
+#### Method 1: Using Deploy Script
+To deploy to Sepolia testnet using the deploy script:
 
 1. Set up environment variables:
 ```bash
 # foundry/.env
 PRIVATE_KEY=your_private_key
-SEPOLIA_RPC_URL=https://eth-sepolia.g.alchemy.com/v2/1ErRyLOv8ZMeI_n3otIQH1BJ7pboy16V
+SEPOLIA_RPC_URL=your_sepolia_rpc_url
 ```
 
 2. Deploy contracts:
 ```bash
 cd foundry
 forge script script/Deploy.s.sol:DeployScript --rpc-url $SEPOLIA_RPC_URL --broadcast --verify
+```
+
+#### Method 2: Manual Deployment
+To deploy to Sepolia testnet manually:
+
+1. Set up environment variables:
+```bash
+# foundry/.env
+PRIVATE_KEY=your_private_key
+SEPOLIA_RPC_URL=your_sepolia_rpc_url
+```
+
+2. Deploy NFT contract:
+```bash
+cd foundry
+forge create src/NFT.sol:NFT --rpc-url $SEPOLIA_RPC_URL --private-key $PRIVATE_KEY --constructor-args "NFT Marketplace" "NFTM" --verify
+```
+
+3. Deploy Marketplace contract (replace NFT_ADDRESS with the address from step 2):
+```bash
+forge create src/Marketplace.sol:Marketplace --rpc-url $SEPOLIA_RPC_URL --private-key $PRIVATE_KEY --constructor-args NFT_ADDRESS --verify
 ```
 
 ## Frontend Development
