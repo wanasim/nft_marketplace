@@ -3,6 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "generate-abi": "forge inspect NFT abi > ../src/contracts/NFT.json && forge inspect Marketplace abi > ../src/contracts/Marketplace.json"
+    "nft-factory-abi": "forge inspect NFTFactory abi > ../src/contracts/NFTFactory.json",
+    "nft-abi": "forge inspect NFT abi > ../src/contracts/NFT.json",
+    "marketplace-abi": "forge inspect Marketplace abi > ../src/contracts/Marketplace.json",
+    "generate-abi": "pnpm run nft-factory-abi && pnpm run nft-abi && pnpm run marketplace-abi",
+    "deploy-anvil": "source ../.env && forge script script/Deploy.s.sol:DeployScript --rpc-url $ANVIL_RPC_URL --broadcast --private-key $ANVIL_PRIVATE_KEY"
   }
 }

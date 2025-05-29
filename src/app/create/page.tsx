@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   useAccount,
   useWaitForTransactionReceipt,
@@ -20,13 +20,23 @@ export default function CreatePage() {
 
   const { data: listData, writeContract: listNFT } = useWriteContract();
 
-  const { isLoading: isMintLoading } = useWaitForTransactionReceipt({
-    hash: mintData,
-  });
+  const { isLoading: isMintLoading, isSuccess: isMintSuccess } =
+    useWaitForTransactionReceipt({
+      hash: mintData,
+    });
 
-  const { isLoading: isListLoading } = useWaitForTransactionReceipt({
-    hash: listData,
-  });
+  const { isLoading: isListLoading, isSuccess: isListSuccess } =
+    useWaitForTransactionReceipt({
+      hash: listData,
+    });
+
+  useEffect(() => {
+    if (isMintSuccess) {
+      toast.success("NFT minted successfully");
+    } else if (isListSuccess) {
+      toast.success("NFT listed successfully");
+    }
+  }, [isMintSuccess, isListSuccess]);
 
   const handleMint = async (formData: {
     name: string;
@@ -42,19 +52,20 @@ export default function CreatePage() {
       console.log("fileHash", fileHash);
       setIsUploading(false);
 
+      console.log("NFT address", CONTRACTS.NFT.address);
       // 4. Mint NFT
-      // mintNFT({
-      //   address: CONTRACTS.NFT.address,
-      //   abi: CONTRACTS.NFT.abi,
-      //   functionName: "mint",
-      //   args: [address, fileHash],
-      // });
+      mintNFT({
+        address: CONTRACTS.NFT.address,
+        abi: CONTRACTS.NFT.abi,
+        functionName: "mint",
+        args: [address, fileHash],
+      });
 
-      // listNFT({
-      //   ...CONTRACTS.Marketplace,
-      //   functionName: "listNFT",
-      //   args: [CONTRACTS.NFT.address, 0, parseEther(formData.price)],
-      // });
+      listNFT({
+        ...CONTRACTS.Marketplace,
+        functionName: "listNFT",
+        args: [CONTRACTS.NFT.address, 0, parseEther(formData.price)],
+      });
     } catch (error) {
       toast.error(`An error occurred: ${error}`);
     } finally {

@@ -8,7 +8,10 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 contract NFT is ERC721URIStorage, Ownable {
     uint256 private _nextTokenId;
 
-    constructor() ERC721("NFT Marketplace", "NFTM") Ownable(msg.sender) {}
+    constructor(string memory name, string memory symbol, string memory baseURI)
+        ERC721(name, symbol)
+        Ownable(msg.sender)
+    {}
 
     function mint(address recipient, string memory tokenURI) public returns (uint256) {
         uint256 tokenId = _nextTokenId++;

@@ -2,12 +2,16 @@
 
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { useAccount } from "wagmi";
+import { useAccount, useReadContracts } from "wagmi";
+import { Button } from "@/components/ui/button";
 
 import { Header } from "@/components/header";
+import { CreateCollectionForm } from "@/components/create-collection-form";
+import { CollectionCard } from "@/components/collection-card";
 import { NFTCard } from "@/components/nft-card";
 import { NFTGridSkeleton } from "@/components/nft-grid-skeleton";
 import type { NFT } from "@/types/nft";
+import { CONTRACTS } from "@/contracts/types";
 
 // Mock data for development - replace with actual contract calls
 const mockNFTs: NFT[] = [
@@ -52,7 +56,24 @@ const mockNFTs: NFT[] = [
 
 export default function HomePage() {
   const { address } = useAccount();
+  const [isCreatingCollection, setIsCreatingCollection] = useState(false);
   const [loadingNFT, setLoadingNFT] = useState<string | null>(null);
+
+  // Fetch user's collections
+  const { data: collections } = useReadContracts({
+    contracts: address
+      ? [
+          {
+            ...CONTRACTS.NFTFactory,
+            functionName: "getUserCollections",
+            args: [address],
+          },
+        ]
+      : [],
+  });
+
+  const collectionAddresses =
+    (collections?.[0]?.result as `0x${string}`[]) || [];
 
   // Mock query - replace with actual contract calls
   const {
@@ -128,43 +149,82 @@ export default function HomePage() {
 
       <main className="container mx-auto px-4 py-8">
         <div className="mb-8">
-          <h1 className="text-4xl font-bold mb-4">Discover NFTs</h1>
+          <h1 className="text-4xl font-bold mb-4">NFT Marketplace</h1>
           <p className="text-gray-600">
-            Explore, collect, and sell extraordinary NFTs on the world's first
-            and largest NFT marketplace.
+            Create collections, mint NFTs, and trade them on our marketplace.
           </p>
         </div>
 
-        {error && (
-          <div className="bg-red-50 border border-red-200 rounded-lg p-4 mb-8">
-            <p className="text-red-800">
-              Failed to load NFTs. Please try again later.
-            </p>
+        {/* Collection Creation */}
+        <div className="mb-8">
+          <Button
+            onClick={() => setIsCreatingCollection(!isCreatingCollection)}
+            className="mb-4"
+          >
+            {isCreatingCollection ? "Cancel" : "Create New Collection"}
+          </Button>
+
+          {isCreatingCollection && (
+            <div className="p-6 bg-white rounded-lg shadow">
+              <h2 className="text-2xl font-semibold mb-4">
+                Create New Collection
+              </h2>
+              <CreateCollectionForm />
+            </div>
+          )}
+        </div>
+
+        {/* Collections Grid */}
+        {collectionAddresses.length > 0 && (
+          <div className="mb-12">
+            <h2 className="text-2xl font-semibold mb-4">Your Collections</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {collectionAddresses.map((collectionAddress) => (
+                <CollectionCard
+                  key={collectionAddress}
+                  address={collectionAddress}
+                  name="Collection Name" // You'll need to fetch this from the contract
+                  symbol="SYMBOL" // You'll need to fetch this from the contract
+                />
+              ))}
+            </div>
           </div>
         )}
 
-        {isLoading ? (
-          <NFTGridSkeleton />
-        ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-            {nfts?.map((nft) => (
-              <NFTCard
-                key={nft.id}
-                nft={nft}
-                onBuy={handleBuyNFT}
-                onList={handleListNFT}
-                onUnlist={handleUnlistNFT}
-                isLoading={loadingNFT === nft.id}
-              />
-            ))}
-          </div>
-        )}
+        {/* Featured NFTs */}
+        <div>
+          <h2 className="text-2xl font-semibold mb-4">Featured NFTs</h2>
+          {error && (
+            <div className="bg-red-50 border border-red-200 rounded-lg p-4 mb-8">
+              <p className="text-red-800">
+                Failed to load NFTs. Please try again later.
+              </p>
+            </div>
+          )}
 
-        {nfts && nfts.length === 0 && (
-          <div className="text-center py-12">
-            <p className="text-gray-500 text-lg">No NFTs found.</p>
-          </div>
-        )}
+          {isLoading ? (
+            <NFTGridSkeleton />
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+              {nfts?.map((nft) => (
+                <NFTCard
+                  key={nft.id}
+                  nft={nft}
+                  onBuy={handleBuyNFT}
+                  onList={handleListNFT}
+                  onUnlist={handleUnlistNFT}
+                  isLoading={loadingNFT === nft.id}
+                />
+              ))}
+            </div>
+          )}
+
+          {nfts && nfts.length === 0 && (
+            <div className="text-center py-12">
+              <p className="text-gray-500 text-lg">No NFTs found.</p>
+            </div>
+          )}
+        </div>
       </main>
     </div>
   );

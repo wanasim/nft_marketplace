@@ -5,7 +5,8 @@
   "scripts": {
     "anvil": "anvil",
     "dev": "next dev --turbopack",
-    "build": "pnpm --filter @nft-marketplace/contracts generate-abi && next build",
+    "build-contracts": "pnpm --filter @nft-marketplace/contracts generate-abi",
+    "deploy-contracts": "pnpm --filter @nft-marketplace/contracts deploy-anvil",
     "start": "next start",
     "lint": "next lint"
   },
