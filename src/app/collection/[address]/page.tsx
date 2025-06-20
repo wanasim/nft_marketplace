@@ -18,12 +18,12 @@ export default function CollectionPage() {
     contracts: [
       {
         address: collectionAddress,
-        abi: CONTRACTS.NFTFactory.abi as Abi,
+        abi: CONTRACTS.CustomERC1155.abi as Abi,
         functionName: "name",
       },
       {
         address: collectionAddress,
-        abi: CONTRACTS.NFTFactory.abi as Abi,
+        abi: CONTRACTS.CustomERC1155.abi as Abi,
         functionName: "symbol",
       },
     ],
@@ -33,8 +33,8 @@ export default function CollectionPage() {
   const { data: nfts, isLoading } = useReadContracts({
     contracts: Array.from({ length: 10 }, (_, i) => ({
       address: collectionAddress,
-      abi: CONTRACTS.NFTFactory.abi as Abi,
-      functionName: "tokenURI",
+      abi: CONTRACTS.CustomERC1155.abi as Abi,
+      functionName: "uri",
       args: [i],
     })),
   });

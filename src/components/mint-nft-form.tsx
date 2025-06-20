@@ -40,7 +40,10 @@ export function MintNFTForm({ onSubmit, isLoading }: MintNFTFormProps) {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!image) return;
+    if (!image) {
+      alert("Please select an image");
+      return;
+    }
     onSubmit({ ...formData, image });
   };
 

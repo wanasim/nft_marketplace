@@ -13,12 +13,9 @@ contract NFTFactory is Ownable {
 
     constructor() Ownable(msg.sender) {}
 
-    function createCollection(string memory name, string memory symbol, string memory baseURI)
-        public
-        returns (address)
-    {
+    function createCollection(string memory name, string memory symbol) public returns (address) {
         // Deploy new NFT contract
-        NFT newCollection = new NFT(name, symbol, baseURI);
+        NFT newCollection = new NFT(name, symbol);
 
         // Transfer ownership to creator
         newCollection.transferOwnership(msg.sender);

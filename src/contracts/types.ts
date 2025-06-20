@@ -1,17 +1,17 @@
 import type { Address } from "viem";
-import NFTFactory_ABI from "./NFTFactory.json";
-import NFT_ABI from "./NFT.json";
+import CollectionsFactory_ABI from "./CollectionsFactory.json";
+import CustomERC1155_ABI from "./CustomERC1155.json";
 import Marketplace_ABI from "./Marketplace.json";
 
-/** Potentially remove reference(s) to NFT address since we are using NFTFactory contract*/
+/** TODO: Potentially remove reference(s) to NFT address since we are using NFTFactory contract*/
 export const CONTRACTS = {
-  NFTFactory: {
-    address: process.env.NEXT_PUBLIC_NFT_FACTORY_ADDRESS as Address,
-    abi: NFTFactory_ABI,
+  CollectionsFactory: {
+    address: process.env.NEXT_PUBLIC_COLLECTIONS_FACTORY_ADDRESS as Address,
+    abi: CollectionsFactory_ABI,
   },
-  NFT: {
-    address: process.env.NEXT_PUBLIC_ANVIL_NFT_ADDRESS as Address,
-    abi: NFT_ABI,
+  CustomERC1155: {
+    address: process.env.NEXT_PUBLIC_CUSTOM_ERC1155_ADDRESS as Address,
+    abi: CustomERC1155_ABI,
   },
   Marketplace: {
     address: process.env.NEXT_PUBLIC_MARKETPLACE_ADDRESS as Address,

@@ -120,13 +120,16 @@ pnpm dev
 
 
 ## TO-DO: 
-1. Fix base components and styling. 
-2. Add create functionality and allow users to upload their own pics of the NFT (if that's the way it's supposed to work. ) 
-    2.1. Implement IPFS for metadata storage if this is the ideal way.  
-3. Deploy the contracts to Anvil using the commands in the README
+1. collections and other contract changes
+2. consolidate create pages + forms
+3. Fix base components and styling. 
+4. Add create functionality and allow users to upload their own pics of the NFT (if that's the way it's supposed to work. ) 
+    4.1. Implement IPFS for metadata storage if this is the ideal way.
+5. Add delisting, buy, etc. functionality for nfts      
+5. Deploy the contracts to Anvil using the commands in the README
 4. Replace the mock data with actual contract calls
 5. Add The Graph subgraph for indexing
-6. Add more advanced features like auctions, offers, etc.
+6. Add more advanced features like most recent nfts, auctions, offers, etc.
 
 Ambitious:
 7. Add a frontend for the marketplace

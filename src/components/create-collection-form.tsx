@@ -19,9 +19,8 @@ export function CreateCollectionForm() {
     const formData = new FormData(e.currentTarget);
     const name = formData.get("name") as string;
     const symbol = formData.get("symbol") as string;
-    const baseURI = formData.get("baseURI") as string;
 
-    if (!name || !symbol || !baseURI) {
+    if (!name || !symbol) {
       toast.error("Please fill in all fields");
       return;
     }
@@ -29,9 +28,9 @@ export function CreateCollectionForm() {
     setIsLoading(true);
     try {
       const hash = await writeContract({
-        ...CONTRACTS.NFTFactory,
+        ...CONTRACTS.CollectionsFactory,
         functionName: "createCollection",
-        args: [name, symbol, baseURI],
+        args: [name, symbol],
       });
       toast.success("Collection created successfully!");
       console.log("Transaction hash:", hash);
@@ -57,10 +56,6 @@ export function CreateCollectionForm() {
       <div className="space-y-2">
         <Label htmlFor="symbol">Collection Symbol</Label>
         <Input id="symbol" name="symbol" placeholder="MAC" required />
-      </div>
-      <div className="space-y-2">
-        <Label htmlFor="baseURI">Base URI</Label>
-        <Input id="baseURI" name="baseURI" placeholder="ipfs://" required />
       </div>
       <Button type="submit" disabled={isLoading}>
         {isLoading ? "Creating..." : "Create Collection"}
