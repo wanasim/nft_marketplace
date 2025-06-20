@@ -216,7 +216,7 @@ export default function CreatePage() {
                 </div>
                 <Button
                   onClick={() =>
-                    router.push("/create/collection")
+                    router.push("/create-collection")
                   }
                 >
                   Create Collection

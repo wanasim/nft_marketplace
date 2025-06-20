@@ -3,7 +3,6 @@
 import { useParams } from "next/navigation";
 import { useReadContracts } from "wagmi";
 import { CONTRACTS } from "@/contracts/types";
-import { Header } from "@/components/header";
 import { NFTCard } from "@/components/nft-card";
 import { NFTGridSkeleton } from "@/components/nft-grid-skeleton";
 import type { NFT } from "@/types/nft";
@@ -45,7 +44,9 @@ export default function CollectionPage() {
       tokenId: index.toString(),
       name: `NFT #${index}`,
       description: "NFT from collection",
-      image: (nft.result as string) || "https://via.placeholder.com/400x400",
+      image:
+        (nft.result as string) ||
+        "https://via.placeholder.com/400x400",
       owner: collectionAddress,
       creator: collectionAddress,
       contractAddress: collectionAddress,
@@ -54,16 +55,16 @@ export default function CollectionPage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <Header />
-
       <main className="container mx-auto px-4 py-8">
         <div className="mb-8">
           <h1 className="text-4xl font-bold mb-2">
-            {(collectionData?.[0]?.result as string) || "Loading..."}
+            {(collectionData?.[0]?.result as string) ||
+              "Loading..."}
           </h1>
           <p className="text-gray-600">
             Collection:{" "}
-            {(collectionData?.[1]?.result as string) || "Loading..."}
+            {(collectionData?.[1]?.result as string) ||
+              "Loading..."}
           </p>
         </div>
 

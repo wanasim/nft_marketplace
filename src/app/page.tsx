@@ -4,9 +4,8 @@ import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useAccount, useReadContracts } from "wagmi";
 import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
-import { Header } from "@/components/header";
-import { CreateCollectionForm } from "@/components/create-collection-form";
 import { CollectionCard } from "@/components/collection-card";
 import { NFTCard } from "@/components/nft-card";
 import { NFTGridSkeleton } from "@/components/nft-grid-skeleton";
@@ -64,8 +63,6 @@ const mockNFTs: NFT[] = [
 
 export default function HomePage() {
   const { address } = useAccount();
-  const [isCreatingCollection, setIsCreatingCollection] =
-    useState(false);
   const [loadingNFT, setLoadingNFT] = useState<
     string | null
   >(null);
@@ -166,8 +163,6 @@ export default function HomePage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <Header />
-
       <main className="container mx-auto px-4 py-8">
         <div className="mb-8">
           <h1 className="text-4xl font-bold mb-4">
@@ -181,63 +176,45 @@ export default function HomePage() {
 
         {/* Collection Creation */}
         <div className="mb-8">
-          <Button
-            onClick={() =>
-              setIsCreatingCollection(!isCreatingCollection)
-            }
-            className="mb-4"
-          >
-            {isCreatingCollection
-              ? "Cancel"
-              : "Create New Collection"}
-          </Button>
-
-          {isCreatingCollection && (
-            <div className="p-6 bg-white rounded-lg shadow">
-              <h2 className="text-2xl font-semibold mb-4">
-                Create New Collection
-              </h2>
-              <CreateCollectionForm />
-            </div>
-          )}
+          <Link href="/create-collection">
+            <Button className="mb-4">
+              Create New Collection
+            </Button>
+          </Link>
         </div>
 
-        {/* Collections Grid */}
-        {collectionAddresses.length > 0 && (
-          <div className="mb-12">
+        {/* User Collections */}
+        {address && collectionAddresses.length > 0 && (
+          <div className="mb-8">
             <h2 className="text-2xl font-semibold mb-4">
               Your Collections
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {collectionAddresses.map(
-                (collectionAddress) => (
-                  <CollectionCard
-                    key={collectionAddress}
-                    address={collectionAddress}
-                    name="Collection Name" // You'll need to fetch this from the contract
-                    symbol="SYMBOL" // You'll need to fetch this from the contract
-                  />
-                )
-              )}
+              {collectionAddresses?.map((address) => (
+                <CollectionCard
+                  key={address}
+                  address={address}
+                  name="Collection" // You'll need to fetch this from the contract
+                  symbol="COL" // You'll need to fetch this from the contract
+                />
+              ))}
             </div>
           </div>
         )}
 
-        {/* Featured NFTs */}
+        {/* NFT Marketplace */}
         <div>
           <h2 className="text-2xl font-semibold mb-4">
             Featured NFTs
           </h2>
-          {error && (
-            <div className="bg-red-50 border border-red-200 rounded-lg p-4 mb-8">
-              <p className="text-red-800">
-                Failed to load NFTs. Please try again later.
-              </p>
-            </div>
-          )}
-
           {isLoading ? (
             <NFTGridSkeleton />
+          ) : error ? (
+            <div className="text-center py-8">
+              <p className="text-red-500">
+                Error loading NFTs: {error.message}
+              </p>
+            </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
               {nfts?.map((nft) => (
@@ -250,14 +227,6 @@ export default function HomePage() {
                   isLoading={loadingNFT === nft.id}
                 />
               ))}
-            </div>
-          )}
-
-          {nfts && nfts.length === 0 && (
-            <div className="text-center py-12">
-              <p className="text-gray-500 text-lg">
-                No NFTs found.
-              </p>
             </div>
           )}
         </div>

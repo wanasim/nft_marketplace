@@ -27,6 +27,7 @@ contract CollectionsFactory is Ownable {
 
     function addToCollection(address collectionAddress, uint256 tokenId, uint256 amount) public returns (address) {
         CustomERC1155 userCollection = CustomERC1155(collectionAddress);
+
         require(userCollection.owner() == msg.sender, "must be an owner of collection");
         userCollection.mint(msg.sender, tokenId, amount);
 

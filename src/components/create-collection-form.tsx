@@ -12,7 +12,9 @@ export function CreateCollectionForm() {
   const [isLoading, setIsLoading] = useState(false);
   const { writeContract } = useWriteContract();
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (
+    e: React.FormEvent<HTMLFormElement>
+  ) => {
     e.preventDefault();
     if (!writeContract) return;
 
@@ -24,6 +26,8 @@ export function CreateCollectionForm() {
       toast.error("Please fill in all fields");
       return;
     }
+    console.log("NAME", name);
+    console.log("SYMB", symbol);
 
     setIsLoading(true);
     try {
@@ -55,7 +59,12 @@ export function CreateCollectionForm() {
       </div>
       <div className="space-y-2">
         <Label htmlFor="symbol">Collection Symbol</Label>
-        <Input id="symbol" name="symbol" placeholder="MAC" required />
+        <Input
+          id="symbol"
+          name="symbol"
+          placeholder="MAC"
+          required
+        />
       </div>
       <Button type="submit" disabled={isLoading}>
         {isLoading ? "Creating..." : "Create Collection"}

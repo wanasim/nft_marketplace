@@ -4,6 +4,7 @@ import "./globals.css";
 import "@rainbow-me/rainbowkit/styles.css";
 
 import { Providers } from "@/components/providers";
+import { Header } from "@/components/header";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -17,7 +18,8 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "NFT Marketplace",
-  description: "A decentralized NFT marketplace built with Next.js and Web3",
+  description:
+    "A decentralized NFT marketplace built with Next.js and Web3",
 };
 
 export default function RootLayout({
@@ -30,7 +32,10 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased `}
       >
-        <Providers>{children}</Providers>
+        <Providers>
+          <Header />
+          {children}
+        </Providers>
       </body>
     </html>
   );

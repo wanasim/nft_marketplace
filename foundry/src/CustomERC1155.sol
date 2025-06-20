@@ -25,4 +25,8 @@ contract CustomERC1155 is ERC1155URIStorage, Ownable {
     function setURI(string memory newURI) public onlyOwner {
         _setURI(newURI);
     }
+
+    function setTokenURI(uint256 tokenId, string memory tokenURI) public onlyOwner {
+        _setURI(tokenId, tokenURI);
+    }
 }
